@@ -13,6 +13,9 @@
     <None Include="js\director.js" />
     <None Include="js\knockout-latest.js" />
     <None Include="css\style.css" />
+    <None Include="js\config.js" />
+    <None Include="js\jquery.min.js" />
+    <None Include="js\knockout.mapping.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="css\" />

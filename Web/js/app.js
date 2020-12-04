@@ -7,7 +7,7 @@
 
 	// Guid generator
 	function uuidv4() {
-		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+		return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
 			var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
 			return v.toString(16);
 		});
@@ -64,20 +64,21 @@
 	};
 
 	// represent a single todo item
-	var Todo = function (title, completed) {
+	var Todo = function (title, completed, id) {
 		var me = this;
 
-		this.id = ko.observable(uuidv4());
+		this.id = ko.observable(id ?? uuidv4());
 		this.title = ko.observable(title);
 		this.completed = ko.observable(completed);
 		this.editing = ko.observable(false);
 
 		ko.computed(function () {
-			//console.log("Change registered - call API");
-			//console.log(me.title());
-			//console.log(me.completed());
-
-			console.log(ko.toJSON(me));
+			$.ajax({
+				url: Config.APIURL + "/Task",
+				contentType: "application/json",
+				method: "POST",
+				data: ko.toJSON(me)
+			});
 		}).extend({
 			rateLimit: { timeout: 500, method: 'notifyWhenChangesStop' }
 		});
@@ -85,10 +86,25 @@
 
 	// our main view model
 	var ViewModel = function (todos) {
+
+		var me = this;
+
 		// map array of passed in todos to an observableArray of Todo objects
 		this.todos = ko.observableArray(todos.map(function (todo) {
 			return new Todo(todo.title, todo.completed);
 		}));
+
+		// load from API
+		$.ajax({
+			url: Config.APIURL + "/Task",
+			contentType: "application/json",
+			method: "GET",
+			success: function (todos) {
+				todos.forEach(function (todo) {
+					me.todos.push(new Todo(todo.title, todo.completed, todo.id));
+				});
+			}
+		});
 
 		// store the new todo value being entered
 		this.current = ko.observable();

@@ -9,7 +9,7 @@ namespace DAL
     public class TaskRepository : ITaskRepository
     {
         private static readonly List<Task> tasks = new List<Task>(new[] {
-                new Task { Title = "Water flowers", IsCompleted = false }
+                new Task { Title = "Water flowers", Completed = false }
             }
         );
 
@@ -24,7 +24,7 @@ namespace DAL
             if (repoTask != null)
             {
                 repoTask.Title = task.Title;
-                repoTask.IsCompleted = task.IsCompleted;
+                repoTask.Completed = task.Completed;
             }
             else
             {
@@ -39,6 +39,11 @@ namespace DAL
             {
                 tasks.Remove(repoTask);
             }
+        }
+
+        public void Clear()
+        {
+            tasks.Clear();
         }
     }
 }
