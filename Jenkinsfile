@@ -1,14 +1,23 @@
 pipeline {
     agent any
+    triggers {
+        pollSCM("* * * * *")
+    }
     stages {
         stage("Build") {
-            sh "dotnet build API/API.csproj"
+            steps {
+                sh "dotnet build API/API.csproj"
+            }
         }
         stage("Test") {
-            sh "dotnet test API/API.csproj"
+            steps {
+                sh "dotnet test API/API.csproj"
+            }
         }
         stage("Deliver") {
-            unstable "Delivery not yet implemented"
+            steps {
+                unstable "Delivery not yet implemented"
+            }
         }
     }
 }
