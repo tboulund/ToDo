@@ -16,6 +16,7 @@
     <None Include="js\config.js" />
     <None Include="js\jquery.min.js" />
     <None Include="js\knockout.mapping.js" />
+    <None Include="Dockerfile.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="css\" />
